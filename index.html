@@ -39,8 +39,8 @@
          <button ng-click = "click($index)" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
        <!--<li>Buy 10 cookies <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>-->
      </ul>
-     <div class="emptyMessage" ng-if = "toBuy.errorMessage" >
-       {{toBuy.errorMessage}}
+     <div class="emptyMessage" ng-if = "toBuy.message" >
+       {{toBuy.message}}
      </div>
     </div>
 
@@ -50,7 +50,7 @@
      <ul>
        <li ng-repeat = "items2 in bought.items">Bought {{items2.quantity}} {{items2.name}}</li>
      </ul>
-     <div class="emptyMessage" ng-if = "bought.errorMessage">{{Nothing bought yet.}}</div>
+     <div class="emptyMessage" ng-if = "bought.show()">{{bought.message}}</div>
     </div>
   </div>
 </div>

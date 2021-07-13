@@ -2,36 +2,6 @@
 //allow error message to be prompt in console - prevent mistake
 'use strict';
 
-//5 items shopping list declared as an array (to buy)
-var toBuyList = [
-  {
-    name: "Milk",
-    quantity: "5"
-  },
-  {
-    name: "Soft Drink",
-    quantity: "10"
-  },
-  {
-    name: "Cookies",
-    quantity: "50"
-  },
-  {
-    name: "Chocolate",
-    quantity: "5"
-  },
-  {
-    name: "Chips",
-    quantity: "20"
-  }
-];
-
-//List of bought items as an array (bought)
-var boughtList = [];
-
-//Set the maximum items
-var max =
-
 //bound to html file
 angular.module('ShoppingListCheckOff', [])
 
@@ -48,11 +18,14 @@ function ToBuyController($scope, ShoppingListCheckOffService){
   var buy = this;
 
   //assign the to buy shopping list with the global variable
-  buy.items = toBuyList;
+  buy.items = ShoppingListCheckOffService.getAllBuyItem();
 
+  //declare ng-click function
   $scope.click = function(index){
 
+    //create an empty array for item adding purpose
     var addItem = [];
+
     //Get the specific item
     addItem.items = ShoppingListCheckOffService.getBuyItems(index);
 
@@ -62,8 +35,9 @@ function ToBuyController($scope, ShoppingListCheckOffService){
     //Remove item from to buy list
     ShoppingListCheckOffService.removeBuyItems(index);
 
+    //Display the message when the to buy list is clared
     if(buy.items.length == 0){
-      buy.errorMessage = "Everything is Bought!"
+      buy.message = "Everything is Bought!"
     }
   };
 
@@ -78,17 +52,48 @@ function AlreadyBoughtController(ShoppingListCheckOffService){
 
   //assign the to buy shopping list with the global variable
   bought.items = ShoppingListCheckOffService.getBoughtItems();
-console.log(maxItems);
-  if(bought.items.length == max-1){
-
+  
+  //Display message only when the bought list is empty
+  bought.show = function(){
+    if(bought.items.length > 0){
+      return false;
+    }else{
+      return bought.message = "Nothing bought yet.";
+    }
   }
-
 }
 
 //Service
 function ShoppingListCheckOffService(){
   //Refernce back to the service
   var service = this;
+
+  //5 items shopping list declared as an array (to buy)
+  var toBuyList = [
+    {
+      name: "Milk",
+      quantity: "5"
+    },
+    {
+      name: "Soft Drink",
+      quantity: "10"
+    },
+    {
+      name: "Cookies",
+      quantity: "50"
+    },
+    {
+      name: "Chocolate",
+      quantity: "5"
+    },
+    {
+      name: "Chips",
+      quantity: "20"
+    }
+  ];
+
+  //List of bought items as an array (bought)
+  var boughtList = [];
 
   //Add item into bought list
   service.addBoughtItem = function(item){
@@ -114,11 +119,15 @@ function ShoppingListCheckOffService(){
     return boughtList;
   };
 
+  //get all to buy items1
+  service.getAllBuyItem = function(){
+    return toBuyList;
+  };
+
   //get to buy item by index
   service.getBuyItems = function (index) {
     return toBuyList[index];
   };
 }
-
 
 })();
